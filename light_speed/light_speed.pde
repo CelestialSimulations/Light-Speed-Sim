@@ -3,7 +3,7 @@ float rxpow = 100;//((.186282 * pow(10, 6)))/pow(10, 6);
 float powscale = 6;//6.5;
 float sizscale = 1;
 
-float scale = .33;
+float planetscale = .33;
 
 int ex = 0;
 
@@ -59,12 +59,7 @@ int stateBackChap = 0;
 PImage starbackground;
 
 void setup () {
-  //fullScreen();
   size (1300, 500);
-  
-  //smooth();
-  
-  //surface.setResizable(true);
 
   PFont font= loadFont("AnonymousPro-Bold-30.vlw");
   textFont(font);
@@ -153,7 +148,7 @@ void draw () {
   
   rectMode(CORNER);
   
-  //decrease scale button
+  //decrease planetscale button
   fill(150);
   rect(width-75, 20, 20, 20, 5);
   fill(0);
@@ -164,14 +159,14 @@ void draw () {
     powscale = powscale + .01;
    //sizscale = sizscale - .01;
 
-    //scale = scale - .05;
+    //planetscale = planetscale - .05;
     
     //delay(150);
     zoom -= .015;
     translateY = translateY + 3.68;
   }
   
-  //increase scale button
+  //increase planetscale button
   noStroke();
   fill(150);
   rect(width-40, 20, 20, 20, 5);
@@ -184,7 +179,7 @@ void draw () {
     powscale = powscale - .01; 
     //sizscale = sizscale + .01;
 
-    //scale = scale + .05;
+    //planetscale = planetscale + .05;
     
     //delay(150);
     zoom += .015;
@@ -197,35 +192,35 @@ void draw () {
     }
   }
   
-  float merx = (35.98 * scale) + sunsize/2;
-  float venx = (67.23 * scale) + sunsize/2;
-  float earx = (92.897 * scale) + sunsize/2;
-  float marx = (141.6 * scale) + sunsize/2;
-  float jupx = (483.6 * scale) + sunsize/2;
-  float satx = (888.2 * scale) + sunsize/2;
-  float urax = (1786.4 * scale) + sunsize/2;
-  float nepx = (2798.8 * scale) + sunsize/2;
-  float plux = (3666.2 * scale) + sunsize/2;
+  float merx = (35.98 * planetscale) + sunsize/2;
+  float venx = (67.23 * planetscale) + sunsize/2;
+  float earx = (92.897 * planetscale) + sunsize/2;
+  float marx = (141.6 * planetscale) + sunsize/2;
+  float jupx = (483.6 * planetscale) + sunsize/2;
+  float satx = (888.2 * planetscale) + sunsize/2;
+  float urax = (1786.4 * planetscale) + sunsize/2;
+  float nepx = (2798.8 * planetscale) + sunsize/2;
+  float plux = (3666.2 * planetscale) + sunsize/2;
   
-  //println((merx - sunsize/2)/scale);
+  //println((merx - sunsize/2)/planetscale);
     
     
     
   ////Lightspeed is 186,000 mi/sec
-  // * Every second, .186282 times the scale (which is relative to the distance of the planets)
+  // * Every second, .186282 times the planetscale (which is relative to the distance of the planets)
   // is added to the rectangle's width *//
   if( rmillis - lastTime >= 1000){
     lastTime = rmillis;
     x = x+(.186282);// * delta;
   }
   
-  rxpow = (x*scale) * delta;
+  rxpow = (x*planetscale) * delta;
   
   //This displays the distance so far accurately by using the pixel length of the light and dividing
-  //it by the scale and multiplying it to the accurate power 
+  //it by the planetscale and multiplying it to the accurate power 
   fill(255);
   textAlign(CORNER);
-  text("Distance: "+nfc((rxpow*pow(10,6))/scale,2)+" miles", width/2 + 200, 40);
+  text("Distance: "+nfc((rxpow*pow(10,6))/planetscale,2)+" miles", width/2 + 200, 40);
   
   
   //compress/stretch solar system 
@@ -236,25 +231,25 @@ void draw () {
   arc(width/2-1,height-100,40,40, HALF_PI, 3*(HALF_PI), PIE);
   
   if(mouseX > width/2 && mouseX < width/2+40 && mouseY > height-100 && mouseY < height-100+40 && mousePressed) {
-   scale = scale + .01;
+   planetscale = planetscale + .01;
   }
   if(mouseX < width/2 && mouseX > width/2-40 && mouseY > height-100 && mouseY < height-100+40 && mousePressed) {
-   scale = scale - .01;
+   planetscale = planetscale - .01;
   }
   
   /*noStroke();
   ellipseMode(CENTER);
   fill(0,100,0);
-  ellipse(width/2, height-50, 20/scale, 20/scale);
+  ellipse(width/2, height-50, 20/planetscale, 20/planetscale);
   fill(100,0,0,200);
-  ellipse(width/2, height-50, 30*scale, 30*scale);
-  if(mouseX > width/2- (10/scale) && mouseX < width/2 +(10/scale) && mouseY > (height-50)-(10/scale) && mouseY < (height-50)+(10/scale) && mousePressed) {
+  ellipse(width/2, height-50, 30*planetscale, 30*planetscale);
+  if(mouseX > width/2- (10/planetscale) && mouseX < width/2 +(10/planetscale) && mouseY > (height-50)-(10/planetscale) && mouseY < (height-50)+(10/planetscale) && mousePressed) {
     rect(30,30,30,30);
-    scale = scale + .02;
+    planetscale = planetscale + .02;
   }
-  if(mouseX > width/2- (15*scale) && mouseX < width/2 +(15*scale) && mouseY > (height-50)-(15*scale) && mouseY < (height-50)+(15*scale) && mousePressed) {
+  if(mouseX > width/2- (15*planetscale) && mouseX < width/2 +(15*planetscale) && mouseY > (height-50)-(15*planetscale) && mouseY < (height-50)+(15*planetscale) && mousePressed) {
     rect(30,30,30,30);
-    scale = scale - .01;
+    planetscale = planetscale - .01;
   }*/
   
   /*noStroke();
@@ -268,7 +263,7 @@ void draw () {
   if(mouseX > width/2-100/*slide-100* && mouseX < width/2+100/*slide+100* && mousePressed) {
    slide = mouseX; 
    if(slide > width/2+10 && slide < width/2+20) {
-     scale = scale + .01;
+     planetscale = planetscale + .01;
      //delay(200);
    }
   }*/
