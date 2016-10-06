@@ -1,4 +1,4 @@
-float rxpow = 100;
+float lightx = 100;
 
 float sizscale = 1;
 float planetscale = .33;
@@ -26,9 +26,30 @@ float translateY;
 float scrollx = 60;
 
 float lastTime = 0;
-float x= 0;
+float x = 0;
+int rmillis = 1;
+
+float rockLastTime = 0;
+int spacemillis = 1;
 
 PImage starbackground;
+PShape rocket;
+boolean rocketshow = false;
+float rocketx = 0;
+
+int sunsize = 60;
+
+  float rockrate = 0;
+
+float merx = (35.98 * planetscale) + sunsize/2;
+float venx = (67.23 * planetscale) + sunsize/2;
+float earx = (92.897 * planetscale) + sunsize/2;
+float marx = (141.6 * planetscale) + sunsize/2;
+float jupx = (483.6 * planetscale) + sunsize/2;
+float satx = (888.2 * planetscale) + sunsize/2;
+float urax = (1786.4 * planetscale) + sunsize/2;
+float nepx = (2798.8 * planetscale) + sunsize/2;
+float plux = (3666.2 * planetscale) + sunsize/2;
 
 void setup () {
   size (1300, 500);
@@ -37,6 +58,8 @@ void setup () {
   textFont(font);
 
   starbackground = loadImage("SolarSystemBG.jpg");
+  
+  rocket = loadShape("rocketship.svg");
 }
 
 void draw () {
@@ -44,25 +67,13 @@ void draw () {
   image(starbackground, 0, 0, width, height);
 
   int y = height/2;
-  int rmillis = 1;
-  int sunsize = 60;
 
   int milliseconds = (millis() - startingTime) * deltatime;
   int seconds = milliseconds / 1000;
   int minutes = seconds / 60;
   int hours = minutes / 60;
   int days = hours / 24;
-
-  float merx = (35.98 * planetscale) + sunsize/2;
-  float venx = (67.23 * planetscale) + sunsize/2;
-  float earx = (92.897 * planetscale) + sunsize/2;
-  float marx = (141.6 * planetscale) + sunsize/2;
-  float jupx = (483.6 * planetscale) + sunsize/2;
-  float satx = (888.2 * planetscale) + sunsize/2;
-  float urax = (1786.4 * planetscale) + sunsize/2;
-  float nepx = (2798.8 * planetscale) + sunsize/2;
-  float plux = (3666.2 * planetscale) + sunsize/2;
-
+  
   buttons();
 
   if (clockRunning == true) {
@@ -137,21 +148,24 @@ void draw () {
   }
 
   /*********************************/
-  ////Lightspeed is 186,000 mi/sec
+  ////Lightspeed is 186,282 mi/sec
   // * Every second, .186282 times the planetscale (which is relative to the distance of the planets)
   // is added to the rectangle's width *//
   if ( rmillis - lastTime >= 1000/10) {
     lastTime = rmillis;
-    x = x+(.186282/10);
+    x = x+((.186282)/10);
+    //rockrate = rockrate + .3/10;
+    //(186282/100000);
   }
 
-  rxpow = (x*planetscale) * delta;
+  //rocketx = (rockrate*planetscale) * delta;
+  lightx = (x*planetscale) * delta;
 
   //This displays the distance so far by using the pixel length of the light and dividing
   //it by the planetscale and multiplying it to the accurate power 
   fill(255);
   textAlign(CORNER);
-  text("Distance: "+nfc((rxpow*pow(10, 6))/planetscale, 2)+" miles", width/2 + 200, 40);
+  text("Distance: "+nfc((lightx*pow(10, 6))/planetscale, 2)+" miles", width/2 + 200, 40);
 
   //compress/stretch solar system 
   noStroke();
@@ -166,6 +180,16 @@ void draw () {
   if (mouseX < width/2 && mouseX > width/2-40 && mouseY > height-100 && mouseY < height-100+40 && mousePressed) {
     planetscale = planetscale - .01;
   }
+  
+  merx = (35.98 * planetscale) + sunsize/2;
+  venx = (67.23 * planetscale) + sunsize/2;
+  earx = (92.897 * planetscale) + sunsize/2;
+  marx = (141.6 * planetscale) + sunsize/2;
+  jupx = (483.6 * planetscale) + sunsize/2;
+  satx = (888.2 * planetscale) + sunsize/2;
+  urax = (1786.4 * planetscale) + sunsize/2;
+  nepx = (2798.8 * planetscale) + sunsize/2;
+  plux = (3666.2 * planetscale) + sunsize/2;
 
   //speeed up time
   if (mouseX > width/2+30 && mouseX < width/2+50 && mouseY > 20 && mouseY < 40 && mousePressed) {    
@@ -213,14 +237,13 @@ void draw () {
   if (mouseX > width/2-20 && mouseX < width/2+20 && mouseY > 20 && mouseY < 40 && mousePressed) {
     stateStart++;
     delay(200);
-    println(stateStart);
   }
 
   if (stateStart == 0) {   
     //wait to start
     clockRunning = true;
-    startingTime = millis();// * deltatime;
-
+    startingTime = millis();
+    
     rectRunning = true;
     rectTime = millis();
 
@@ -275,12 +298,21 @@ void draw () {
 
   translate(translateX, translateY);
   scale(zoom);
+  
+  //if(keyPressed) {
+    //spaceship();
+    //rocketshow = true;
+  //}
+  //if(rocketshow == true) {
+     spaceship(186282, merx); 
+     spaceship(1000, earx);
+  //}
 
   //Light rectangle
   noStroke();
   fill(#FEFF1F, 200); 
   rectMode(CORNER);  
-  rect((sunsize/2)*sizscale, y-sunsize/2, rxpow/sizscale, sunsize*sizscale);
+  rect((sunsize/2)*sizscale, y-sunsize/2, lightx/sizscale, sunsize*sizscale);
 
   //sun
   fill(#FEFF1F);
@@ -302,8 +334,33 @@ void draw () {
 }
 
 void mouseWheel(MouseEvent e) {
-
   translateX -= e.getCount() * mouseX / 100;
+}
+
+void spaceship(float rate, float defpos, int time) {
+
+  rate = rate/pow(10, 6);
+  
+  if ( time - rockLastTime >= 1000/10) {
+    rockLastTime = time;
+    rockrate = rockrate + (rate/10);
+  }
+  rocketx = (rockrate*planetscale) * delta;
+  
+  //rocket = loadShape("death-star2.svg");
+  
+  //println(lastTime);
+  /*x = x+((.186282)/10);
+    (186282/100000);
+  }
+
+  lightx = (x*planetscale) * delta*/
+  
+  shape(rocket, rocketx/sizscale+defpos, height/2, 20, 20);
+}
+
+void spaceship(float rate, float defpos) {
+  spaceship(rate, defpos, rmillis);
 }
 
 void buttons() {
@@ -312,6 +369,13 @@ void buttons() {
   rectMode(CORNER);
   fill(10, 200);
   rect(0, 0, width, 60);
+  
+  //interface bar for rocket
+  rect(0, height-40, width, 40);
+  
+  //text for rckt bar
+  fill(255);
+  text("ROCKETSHIP:", 20, height-15);
 
   //button to start light
   rectMode(CENTER);
@@ -329,7 +393,4 @@ void buttons() {
   triangle(width/2 + 55, 38, width/2 + 55, 22, width/2 + 73, 30);
   //extra back icon
   triangle(width/2 - 55, 38, width/2 - 55, 22, width/2 - 73, 30);
-}
-
-void spaceship() {
 }
