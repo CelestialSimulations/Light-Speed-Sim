@@ -34,6 +34,7 @@ int spacemillis = 1;
 
 PImage starbackground;
 PShape rocket;
+PImage deathstar;
 boolean rocketshow = false;
 float rocketx = 0;
 
@@ -51,6 +52,9 @@ float urax = (1786.4 * planetscale) + sunsize/2;
 float nepx = (2798.8 * planetscale) + sunsize/2;
 float plux = (3666.2 * planetscale) + sunsize/2;
 
+flying_obj ship = new flying_obj();
+flying_obj ship2 = new flying_obj();
+
 void setup () {
   size (1300, 500);
 
@@ -60,11 +64,16 @@ void setup () {
   starbackground = loadImage("SolarSystemBG.jpg");
   
   rocket = loadShape("rocketship.svg");
+  //deathstar = loadImage("death-star2.png");
 }
 
 void draw () {
   background(70);
   image(starbackground, 0, 0, width, height);
+  
+  //ship.fly(186282, merx, rmillis);
+  //ship2.fly(100000, venx, rmillis);
+  //ship.fly(186282, earx);
 
   int y = height/2;
 
@@ -299,14 +308,10 @@ void draw () {
   translate(translateX, translateY);
   scale(zoom);
   
-  //if(keyPressed) {
-    //spaceship();
-    //rocketshow = true;
-  //}
-  //if(rocketshow == true) {
-     spaceship(186282, merx); 
-     spaceship(1000, earx);
-  //}
+  ship.appear(merx, "death-star2.svg");
+  ship.fly(186282, rmillis);
+  ship2.appear(earx, "rocketship.svg");
+  ship2.fly(100000, rmillis);
 
   //Light rectangle
   noStroke();
@@ -347,14 +352,7 @@ void spaceship(float rate, float defpos, int time) {
   }
   rocketx = (rockrate*planetscale) * delta;
   
-  //rocket = loadShape("death-star2.svg");
-  
-  //println(lastTime);
-  /*x = x+((.186282)/10);
-    (186282/100000);
-  }
-
-  lightx = (x*planetscale) * delta*/
+  rocket = loadShape("death-star2.svg");
   
   shape(rocket, rocketx/sizscale+defpos, height/2, 20, 20);
 }
