@@ -1,3 +1,4 @@
+// light speed sim
 float lightx = 100;
 
 float sizscale = 1;

@@ -3,7 +3,7 @@
 // then it's the ship's name.
 //
 // flying_obj, ship name 
-//    ↓        ↓
+//    ↓         ↓
 flying_obj deathstar;
 flying_obj rocket;
 

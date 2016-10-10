@@ -15,7 +15,7 @@ shipname.destroy();
 * `build()` is used to create the shape of the ship.
 * `fly(rate, rmillis)` is used to make the ship fly at a certain rate. You can define the rate, but it must
 always have a second parameter called `rmillis`.
-* `burn()` BURNS the ship.
+* `burn()` places a image of a flame over the ship.
 * `destroy()` DESTROYS the ship.
 
 You can use burn and destroy to test your ship under different conditions. Speaking of conditions, to

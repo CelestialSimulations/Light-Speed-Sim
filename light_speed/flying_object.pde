@@ -1,3 +1,4 @@
+// class for ship
 class flying_obj {
   float rlastTime = 0;
   float rspeed = 0;
