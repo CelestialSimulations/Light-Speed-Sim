@@ -14,7 +14,7 @@ shipname.destroy();
 * `shipname` is just a placeholder for what you want to call the ship.
 * `build()` is used to create the shape of the ship.
 * `fly(rate, rmillis)` is used to make the ship fly at a certain rate. You can define the rate, but it must
-always a second parameter called `rmillis`.
+always have a second parameter called `rmillis`.
 * `burn()` BURNS the ship.
 * `destroy()` DESTROYS the ship.
 
@@ -105,7 +105,9 @@ This is fairly simple, you can simply download it or clone it, if you like.
 ### Downloading
 
 Simply find this button,
+
 ![alt download](downloadbtn.png "download")
+
 and click Download Zip.
 
 ### Cloning
@@ -127,7 +129,7 @@ It should appear in Documents folder quickly.
 
 You should rename your folder so you know it's yours. Now, double click on the folder called Light-Speed-Sim, and
 then navigate to the folder light_speed. Double click on **light_speed.pde**. It will open up a code file in an
-application called Processing 3. Navigate to the ships tab. This is where your adventure as a space programming
+application called Processing 3. Navigate to the **ships** tab. This is where your adventure as a space programming
 cadet will begin.
 
 

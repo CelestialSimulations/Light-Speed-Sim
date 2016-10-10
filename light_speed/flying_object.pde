@@ -26,7 +26,7 @@ class flying_obj {
       rspeed = rspeed + (rate/10);
     }
   }
-  void appear () {
+  void build () {
     if(displayShip == true) {
      shape(shipSvg, ((rspeed*planetscale) * delta)/sizscale+defpos, height/2, 20, 20);
     }

@@ -26,8 +26,8 @@ void shipSetup() {
 void ships() {
   //rate is in miles
   
-  // appear() makes an image of the selected ship show up
-  deathstar.appear();
+  // build() makes an image of the selected ship show up
+  deathstar.build();
   
   // fly(186282) makes ship move forward at a rate of 186,282 miles per second
   // the number 186282 is the rate - it could be any number, if you like. rmillis 
@@ -44,7 +44,7 @@ void ships() {
   println(rocketRate);
   
   // deathsta
-  rocket.appear();
+  rocket.build();
   rocket.fly(rocketRate, rmillis);
   
   // rmillis is the time that has passed since the play button was pressed in
@@ -53,6 +53,7 @@ void ships() {
     // burn() places a fire image in front of the ship
     rocket.burn(); 
   }
+  
   // try adding a condition for destroying the ship when rocketRate becomes very high. 
   // The syntax to destroy it would be rocket.destroy();
   
