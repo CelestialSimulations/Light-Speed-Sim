@@ -3,7 +3,7 @@ float lightx = 100;
 float sizscale = 1;
 float planetscale = .33;
 
-int ex = 0;
+int sunx = 0;
 
 int stateStart = 0;
 
@@ -18,10 +18,10 @@ int rectTime;
 int rectSoFar;
 boolean rectRunning;
 
-float zoom = 1;
+float zoom = 2;
 
 float translateX = 0;
-float translateY;
+float translateY = -250;
 
 float scrollx = 60;
 
@@ -29,31 +29,21 @@ float lastTime = 0;
 float x = 0;
 int rmillis = 1;
 
-float rockLastTime = 0;
-int spacemillis = 1;
-
 PImage starbackground;
-PShape rocket;
-PImage deathstar;
-boolean rocketshow = false;
-float rocketx = 0;
 
 int sunsize = 60;
 
-  float rockrate = 0;
+float[] planetDistances = {35.98, 67.23, 92.897, 141.6, 483.6, 888.2, 1786.4, 2798.8, 3666.2};
 
-float merx = (35.98 * planetscale) + sunsize/2;
-float venx = (67.23 * planetscale) + sunsize/2;
-float earx = (92.897 * planetscale) + sunsize/2;
-float marx = (141.6 * planetscale) + sunsize/2;
-float jupx = (483.6 * planetscale) + sunsize/2;
-float satx = (888.2 * planetscale) + sunsize/2;
-float urax = (1786.4 * planetscale) + sunsize/2;
-float nepx = (2798.8 * planetscale) + sunsize/2;
-float plux = (3666.2 * planetscale) + sunsize/2;
-
-flying_obj ship = new flying_obj();
-flying_obj ship2 = new flying_obj();
+float mercuryX = (35.98 * planetscale) + sunsize/2;
+float venusX = (67.23 * planetscale) + sunsize/2;
+float earthX = (92.897 * planetscale) + sunsize/2;
+float marsX = (141.6 * planetscale) + sunsize/2;
+float jupiterX = (483.6 * planetscale) + sunsize/2;
+float saturnX = (888.2 * planetscale) + sunsize/2;
+float uranusX = (1786.4 * planetscale) + sunsize/2;
+float neptuneX = (2798.8 * planetscale) + sunsize/2;
+float plutoX = (3666.2 * planetscale) + sunsize/2;
 
 void setup () {
   size (1300, 500);
@@ -63,18 +53,15 @@ void setup () {
 
   starbackground = loadImage("SolarSystemBG.jpg");
   
-  rocket = loadShape("rocketship.svg");
-  //deathstar = loadImage("death-star2.png");
+  shipSetup();
 }
 
 void draw () {
   background(70);
   image(starbackground, 0, 0, width, height);
   
-  //ship.fly(186282, merx, rmillis);
-  //ship2.fly(100000, venx, rmillis);
-  //ship.fly(186282, earx);
-
+  buttons();
+  
   int y = height/2;
 
   int milliseconds = (millis() - startingTime) * deltatime;
@@ -82,8 +69,6 @@ void draw () {
   int minutes = seconds / 60;
   int hours = minutes / 60;
   int days = hours / 24;
-  
-  buttons();
 
   if (clockRunning == true) {
     milliseconds -= (seconds * 1000);
@@ -163,11 +148,8 @@ void draw () {
   if ( rmillis - lastTime >= 1000/10) {
     lastTime = rmillis;
     x = x+((.186282)/10);
-    //rockrate = rockrate + .3/10;
-    //(186282/100000);
   }
 
-  //rocketx = (rockrate*planetscale) * delta;
   lightx = (x*planetscale) * delta;
 
   //This displays the distance so far by using the pixel length of the light and dividing
@@ -190,15 +172,19 @@ void draw () {
     planetscale = planetscale - .01;
   }
   
-  merx = (35.98 * planetscale) + sunsize/2;
-  venx = (67.23 * planetscale) + sunsize/2;
-  earx = (92.897 * planetscale) + sunsize/2;
-  marx = (141.6 * planetscale) + sunsize/2;
-  jupx = (483.6 * planetscale) + sunsize/2;
-  satx = (888.2 * planetscale) + sunsize/2;
-  urax = (1786.4 * planetscale) + sunsize/2;
-  nepx = (2798.8 * planetscale) + sunsize/2;
-  plux = (3666.2 * planetscale) + sunsize/2;
+  for(int i = 0; i < planetDistances.length; i++) {
+    planetDistances[i] = scaler(planetDistances[i]);
+  }
+  
+  mercuryX = (35.98 * planetscale) + sunsize/2;
+  venusX = (67.23 * planetscale) + sunsize/2;
+  earthX = (92.897 * planetscale) + sunsize/2;
+  marsX = (141.6 * planetscale) + sunsize/2;
+  jupiterX = (483.6 * planetscale) + sunsize/2;
+  saturnX = (888.2 * planetscale) + sunsize/2;
+  uranusX = (1786.4 * planetscale) + sunsize/2;
+  neptuneX = (2798.8 * planetscale) + sunsize/2;
+  plutoX = (3666.2 * planetscale) + sunsize/2;
 
   //speeed up time
   if (mouseX > width/2+30 && mouseX < width/2+50 && mouseY > 20 && mouseY < 40 && mousePressed) {    
@@ -301,18 +287,13 @@ void draw () {
     translateX = 0;
   }
 
-  if (translateX <= -plux-width/2) {
-    translateX = -plux-width/2;
+  if (translateX <= -plutoX-width/2) {
+    translateX = -plutoX-width/2;
   }
 
   translate(translateX, translateY);
   scale(zoom);
   
-  ship.appear(merx, "death-star2.svg");
-  ship.fly(186282, rmillis);
-  ship2.appear(earx, "rocketship.svg");
-  ship2.fly(100000, rmillis);
-
   //Light rectangle
   noStroke();
   fill(#FEFF1F, 200); 
@@ -322,43 +303,39 @@ void draw () {
   //sun
   fill(#FEFF1F);
   ellipseMode(CENTER);
-  ellipse(ex, y, sunsize*sizscale, sunsize*sizscale);
+  ellipse(sunx, y, sunsize*sizscale, sunsize*sizscale);
 
   //planets
   fill(255, 0, 0);
   noStroke();
-  ellipse(merx, y, 4*sizscale, 4*sizscale);
-  ellipse(venx, y, 6*sizscale, 6*sizscale);
-  ellipse(earx, y, 6*sizscale, 6*sizscale);
-  ellipse(marx, y, 5*sizscale, 5*sizscale);
-  ellipse(jupx, y, 20*sizscale, 20*sizscale);
-  ellipse(satx, y, 17*sizscale, 17*sizscale);
-  ellipse(urax, y, 15*sizscale, 15*sizscale);
-  ellipse(nepx, y, 13*sizscale, 13*sizscale);
-  ellipse(plux, y, 3*sizscale, 3*sizscale);
+  fill(100);
+  ellipse(mercuryX, y, 4*sizscale, 4*sizscale);
+  fill(#E87223);
+  ellipse(venusX, y, 6*sizscale, 6*sizscale);
+  fill(#23B2E8);
+  ellipse(earthX, y, 6*sizscale, 6*sizscale);
+  fill(#E89923);
+  ellipse(marsX, y, 5*sizscale, 5*sizscale);
+  fill(#E8C123);
+  ellipse(jupiterX, y, 20*sizscale, 20*sizscale);
+  fill(#E5E592);
+  ellipse(saturnX, y, 17*sizscale, 17*sizscale);
+  fill(#A8F5F4);
+  ellipse(uranusX, y, 15*sizscale, 15*sizscale);
+  fill(#5D66FF);
+  ellipse(neptuneX, y, 13*sizscale, 13*sizscale);
+  fill(#989898);
+  ellipse(plutoX, y, 3*sizscale, 3*sizscale);
+  
+  ships();
 }
 
 void mouseWheel(MouseEvent e) {
   translateX -= e.getCount() * mouseX / 100;
 }
 
-void spaceship(float rate, float defpos, int time) {
-
-  rate = rate/pow(10, 6);
-  
-  if ( time - rockLastTime >= 1000/10) {
-    rockLastTime = time;
-    rockrate = rockrate + (rate/10);
-  }
-  rocketx = (rockrate*planetscale) * delta;
-  
-  rocket = loadShape("death-star2.svg");
-  
-  shape(rocket, rocketx/sizscale+defpos, height/2, 20, 20);
-}
-
-void spaceship(float rate, float defpos) {
-  spaceship(rate, defpos, rmillis);
+float scaler(float distance) {
+ return (distance * planetscale) + sunsize/2; 
 }
 
 void buttons() {
@@ -369,11 +346,7 @@ void buttons() {
   rect(0, 0, width, 60);
   
   //interface bar for rocket
-  rect(0, height-40, width, 40);
-  
-  //text for rckt bar
-  fill(255);
-  text("ROCKETSHIP:", 20, height-15);
+  //rect(0, height-40, width, 40);
 
   //button to start light
   rectMode(CENTER);
